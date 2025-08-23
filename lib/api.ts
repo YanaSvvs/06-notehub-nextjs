@@ -1,5 +1,5 @@
-import axios from 'axios'
-import type { Note } from '@types/note';
+import { FormValues, Note } from "@/types/note";
+import axios from "axios";
 
 interface NotesHttpResponse {
     notes: Note[],
