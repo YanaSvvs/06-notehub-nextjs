@@ -1,4 +1,3 @@
-
 'use client';
 import { SearchBox } from '@/components/SearchBox/SearchBox';
 import css from './NotesPage.module.css';
@@ -14,19 +13,14 @@ import { Modal } from '@/components/Modal/Modal';
 import { NoteForm } from '@/components/NoteForm/NoteForm';
 import { useDebouncedCallback } from 'use-debounce';
 import { Toaster } from 'react-hot-toast';
-import { Note } from '@/types/note';
 
 interface NotesClientProps {
-  initialData: {
-    notes: Note[];
-    totalPages: number;
-  };
+
   initialQuery: string;
   initialPage: number;
 }
 
 export default function NotesClient({
-  initialData,
   initialQuery,
   initialPage,
 }: NotesClientProps) {
@@ -38,7 +32,7 @@ export default function NotesClient({
     queryKey: ['notes', query, currentPage],
     queryFn: () => fetchNotes(query, currentPage),
     placeholderData: keepPreviousData,
-    initialData,
+
     refetchOnMount: false,
   });
 
@@ -75,8 +69,9 @@ export default function NotesClient({
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
       <Toaster position="top-right" />
-      {isSuccess && data?.notes.length === 0 && <ErrorMessageEmpty />}
-      {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
+      {/* Перевіряємо data на наявність, оскільки гідратовані дані можуть бути 'undefined' перед першим рендером */}
+      {isSuccess && data?.notes.length === 0 && <ErrorMessageEmpty />} 
+      {isSuccess && data && data.notes.length > 0 && <NoteList notes={data.notes} />}
       {isOpenModal && (
         <Modal onClose={handleCloseModal}>
           <NoteForm onClose={handleCloseModal} />

@@ -1,13 +1,22 @@
 'use client';
 import css from './error.module.css';
+import { useEffect } from 'react'; 
+
 type ErrorProps = {
-  error: Error;
+  error: Error & { digest?: string }; 
   reset: () => void;
 };
 
 const Error = ({ error, reset }: ErrorProps) => {
+  
+  useEffect(() => {
+    
+    console.error(error);
+  }, [error]);
+
   return (
-    <div className={css.conteiner}>
+    
+    <div className={css.container}>
       <p className={css.text}>
         Could not fetch the list of notes. {error.message}
       </p>
